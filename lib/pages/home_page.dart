@@ -10,6 +10,10 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+
+  //text controller
+  final TextEditingController taskController = TextEditingController();
+
   //list of tasks
   List toDoList = [
     ["Naruto", false], 
@@ -23,12 +27,25 @@ class _HomePageState extends State<HomePage> {
     });
   }
 
+  //save new task
+  void saveNewTask() {
+    setState(() {
+      toDoList.add([taskController.text, false]);
+      taskController.clear();
+    });
+    Navigator.of(context).pop();
+  }
+
   //create new task
   void createNewTask() {
       showDialog(
         context: context, 
         builder: (context) {
-        return DialogBox();
+        return DialogBox(
+          controller: taskController,
+          onSave: saveNewTask,
+          onCancel: () => Navigator.of(context).pop(),
+        );
       });
   }
 
